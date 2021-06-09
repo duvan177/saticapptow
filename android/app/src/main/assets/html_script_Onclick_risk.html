@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="upgrade-insecure-requests"
+    />
+    <title>ArcGIS API for JavaScript Tutorials: Select a basemap</title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <!-- leaflet -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+
+    <!--minimap-->
+    <link
+      rel="stylesheet prefetch"
+      href="https://rawgit.com/Norkart/Leaflet-MiniMap/master/dist/Control.MiniMap.min.css"
+    />
+    <script src="https://rawgit.com/Norkart/Leaflet-MiniMap/master/dist/Control.MiniMap.min.js"></script>
+
+    <!--Filtro de capas -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-groupedlayercontrol/0.6.1/leaflet.groupedlayercontrol.min.css"
+    />
+    <script src="https://rawgithub.com/ismyrnow/Leaflet.groupedlayercontrol/master/src/leaflet.groupedlayercontrol.js"></script>
+
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.2/esri-leaflet.js"></script>
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="https://unpkg.com/esri-leaflet"></script>
+
+    <!--pulse from CDN-->
+    <script src="https://unpkg.com/leaflet-pulse-icon@0.1.0/src/L.Icon.Pulse.js"></script>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-pulse-icon@0.1.0/src/L.Icon.Pulse.css"
+    />
+  </head>
+  <body>
+    <div id="map" style="width: 100%; height: 100vh"></div>
+  </body>
+</html>
+
+<script type="text/javascript">
+  var mymap1 = L.map('map').setView([3.42603, -76.52046], 12);
+
+  //Mapas base
+  var basemaps = {
+    Maps: L.tileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+      maxZoom: 19,
+      attribution: '&copy; <label href="">Google Maps</label>',
+    }),
+  };
+
+  /////ICONOS PULSO
+  var redIcon = L.icon.pulse({color: 'red', fillColor: 'red', animate: true});
+
+  /////// MARCA
+
+  var firstLatLng;
+
+  // function pointClick(e) {
+  //   console.log('data', e);
+
+  //   var lat = e.latlng.lat.toFixed(8);
+  //   var lon = e.latlng.lng.toFixed(8);
+
+  //   if (firstLatLng) {
+  //     if (marcaPoint) {
+  //       mymap1.removeLayer(marcaPoint);
+  //     }
+  //   }
+
+  //   firstLatLng = e.latlng;
+  //   marcaPoint = L.marker(firstLatLng, {icon: redIcon})
+  //     .addTo(mymap1)
+  //     .bindPopup(
+  //       '<strong>Punto de riesgo</strong><br/> Latitud: ' +
+  //         lat +
+  //         '<br/>Longitud: ' +
+  //         lon,
+  //     )
+  //     .openPopup();
+    
+  //   window.ReactNativeWebView.postMessage(JSON.stringify(e.latlng));
+  // }
+
+  // mymap1.on('click', function (e) {
+  //   // console.log('data', e);
+
+  //   var lat = e.latlng.lat.toFixed(8);
+  //   var lon = e.latlng.lng.toFixed(8);
+
+  //   if (firstLatLng) {
+  //     if (marcaPoint) {
+  //       mymap1.removeLayer(marcaPoint);
+  //     }
+  //   }
+
+  //   firstLatLng = e.latlng;
+  //   marcaPoint = L.marker(firstLatLng, {icon: redIcon})
+  //     .addTo(mymap1)
+  //     .bindPopup(
+  //       '<strong>Punto de riesgo</strong><br/> Latitud: ' +
+  //         lat +
+  //         '<br/>Longitud: ' +
+  //         lon,
+  //     )
+  //     .openPopup();
+  //     console.log(marcaPoint)
+  //   window.ReactNativeWebView.postMessage(JSON.stringify(e.latlng));
+  // });
+
+
+    // L.marker([3.390818, -76.521973], {icon: redIcon})
+    //   .addTo(mymap1)
+    //   .bindPopup(
+    //     '<strong>Punto de riesgo</strong><br/> Latitud: ' 
+       
+        
+    //   )
+    //   .openPopup();
+
+  basemaps.Maps.addTo(mymap1);
+  window.isNativeApp = true;
+  true; // note: this is required, or you'll sometimes get silent failures
+</script>
