@@ -1,11 +1,13 @@
-import { ADD_USER} from '../constants/action-types'
+import { ADD_USER , ADD_RISK_USER} from '../constants/action-types'
 
 interface initial{
-    user:any
+    user:any ,
+    risks: []
 }
 
 const initialState :initial =  {
-    user: {}
+    user: {},
+    risks:[]
 }
 
 const userReducer = ( state = initialState , action:any ) =>{
@@ -13,6 +15,11 @@ const userReducer = ( state = initialState , action:any ) =>{
     if(action.type == ADD_USER){
         return Object.assign({}, state , {
             user : state.user = action.payload
+        });
+    }
+    if (action.type == ADD_RISK_USER) {
+        return Object.assign({}, state , {
+            risks : state.risks = action.payload
         });
     }
     return state;

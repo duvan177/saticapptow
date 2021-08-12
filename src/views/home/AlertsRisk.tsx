@@ -113,33 +113,12 @@ const IMGRISK = [
   },
 ];
 
-const DATATEST = [
-  {
-    title: 'Alerta 1',
-    text: 'descripcion del riesgo 1',
-  },
-  {
-    title: 'Alerta 2',
-    text: 'descripcion del riesgo 2',
-  },
-  {
-    title: 'Alerta 3',
-    text: 'descripcion del riesgo 3',
-  },
-  {
-    title: 'Alerta 4',
-    text: 'descripcion del riesgo 4',
-  },
-  {
-    title: 'Alerta 5',
-    text: 'descripcion del riesgo 5',
-  },
-];
+
 
 const setItemImage = (id: any) => {
   const risk = IMGRISK.filter((item) => item.value == id);
 
-  console.log(risk);
+  // console.log(risk);
   return risk[0]?.['on'];
 };
 
@@ -211,36 +190,37 @@ const wait = (timeout: any) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-function alertsRisk({navigation , user}: any) {
-  const [risks, setRisks] = useState([]);
+function alertsRisk({navigation , user , risks , risksByUser}: any) {
+  const [dataRisks, setDataRisks] = useState([]);
   const [statusGetRisks, setStatusGetRisks] = useState(true);
   // const [refreshing, setrefreshing] = useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
   const [meAlerts, setMeAlerts] = useState([]);
   const getRisks = async () => {
     // setrefreshing(true);
-    const responseMeAlerts = await userRoutes.alertsRiskByUser();
-    responseMeAlerts.status && setMeAlerts(responseMeAlerts.data);
+    // const responseMeAlerts = await userRoutes.alertsRiskByUser();
+    // responseMeAlerts.status && setMeAlerts(responseMeAlerts.data);
 
-    console.log('mis alertas', responseMeAlerts);
-    const response = await userRoutes.alertsRisk();
+    // console.log('mis alertas', responseMeAlerts);
+    // const response = await userRoutes.alertsRisk();
 
-    // setrefreshing(false);
+    // // setrefreshing(false);
     setStatusGetRisks(false);
 
-    response.status
-      ? setFilterData(response.data)
-      : Alert.alert(
-          '',
-          'error en obtener información, espera unos minutos. Gracias',
-        );
-    console.log('alertas', response);
+    // response.status
+    //   ? setFilterData(response.data)
+    //   : Alert.alert(
+    //       '',
+    //       'error en obtener información, espera unos minutos. Gracias',
+    //     );
+    console.log('riesgos get api', risks);
   };
-  const setFilterData = (data: any) => {
+  const setFilterData = async (data: any) => {
     const filterAlerts = data.filter((item: any) => item.ID_ESTADO === 43);
     // !(risks.length == filterAlerts.length) && notifi();
-    setRisks(filterAlerts);
-    console.log(filterAlerts);
+    setDataRisks(filterAlerts);
+    return true
+    // console.log(filterAlerts);
   };
   const navigateDetail = (data: any) =>
     navigation.navigate('AlertRiskStackContainer', {
@@ -267,10 +247,20 @@ function alertsRisk({navigation , user}: any) {
     });
   }, []);
 
+  // useEffect(() => {
+  //   getRisks();
+  // }, []);
+
   useEffect(() => {
-    getRisks();
-    console.log('redux' , user)
-  }, []);
+    // console.log('riesgos' ,risks)
+    
+    setFilterData(risks)
+    setStatusGetRisks(false);
+    // setDataRisks(risks)
+  }, [risks])
+  useEffect(() => {
+    setMeAlerts(risksByUser)
+  }, [risksByUser])
 
   const notificacion = () => {
     console.log('entré a notificaciones');
@@ -287,12 +277,7 @@ function alertsRisk({navigation , user}: any) {
       date={item.FECHA_CREA}
     />
   );
-  useEffect(() => {
-    console.log(moment.locale());
-    // setTimeout(() => {
-    //   notifi()
-    // }, 5000);
-  }, []);
+
 
   const _renderItem = ({item, index}: any) => {
     return (
@@ -413,7 +398,7 @@ function alertsRisk({navigation , user}: any) {
                   Alertas recientes
                 </Text>
                 <FlatList
-                  data={risks}
+                  data={dataRisks}
                   renderItem={renderItem}
                   keyExtractor={(item: any) => `${item.ID_TICKET}`}
                 />
@@ -429,6 +414,8 @@ function alertsRisk({navigation , user}: any) {
 const mapStateToProps = (state: any) => {
   return {
     user: state.userReducer.user,
+    risks: state.riskReducer.risks,
+    risksByUser : state.userReducer.risks
   };
 };
 

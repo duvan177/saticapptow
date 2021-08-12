@@ -1,5 +1,8 @@
-import { addUser } from "./user/user";
+import { addUser, addRiskUser } from "./user/user";
+import {addRisks } from './risk'
 
 export {
-    addUser
+    addUser,
+    addRisks,
+    addRiskUser
 }

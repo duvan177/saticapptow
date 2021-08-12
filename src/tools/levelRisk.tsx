@@ -1,6 +1,6 @@
 
   const DATA: any = {
-    "inundacion": {
+    "inundación": {
       "Bajo": "El río o canal aumentó su nivel, no tiene consecuencias directas en la pérdida de vidas humanas ni materiales. El daño derivado por el aumento del nivel del agua es tolerable.",
       "Medio": "El río o canal aumentó su nivel, el daño derivado genera afectaciones por una posible inundación. Es probable sufrir afectaciones. Se realizarán acciones para eliminar o reducir.",
       "Alto": "El río o canal genera un desbordamiento inminente con consecuencias directas en la pérdida de vidas humanas y materiales. Se realizarán acciones de control inmediato."

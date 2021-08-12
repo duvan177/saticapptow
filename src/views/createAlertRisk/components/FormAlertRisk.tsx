@@ -36,7 +36,7 @@ const MapTypeRisk = ({arr, typeRisk, setRisk, setLabelTypeRisk}: any) => {
         key={`${index}`}
         onPress={() => {
           setRisk(item.value);
-          setLabelTypeRisk(item.label);
+          setLabelTypeRisk(item.text);
         }}
         style={[
           styles.buttonRisk,
@@ -129,6 +129,8 @@ export default function FormAlertRisk(props: any): JSX.Element {
       off: require(`../../../assets/images/risk/INCENDIOOff.png`),
       status: false,
       label: 'incendio',
+      text: 'incendio',
+
       value: 23,
     },
     {
@@ -136,6 +138,8 @@ export default function FormAlertRisk(props: any): JSX.Element {
       off: require(`../../../assets/images/risk/INUNDACIONOff.png`),
       status: false,
       label: 'inundacion',
+      text: 'inundación',
+
       value: 24,
     },
     {
@@ -143,6 +147,8 @@ export default function FormAlertRisk(props: any): JSX.Element {
       off: require(`../../../assets/images/risk/DESLIZAMIENTOOff.png`),
       status: false,
       label: 'deslizamiento',
+      text: 'deslizamiento',
+
       value: 25,
     },
     {
@@ -150,6 +156,8 @@ export default function FormAlertRisk(props: any): JSX.Element {
       off: require(`../../../assets/images/risk/INCENDIOFORESTALOff.png`),
       status: false,
       label: 'incendioforestal',
+      text: 'incendioforestal',
+
       value: 27,
     },
     {
@@ -157,6 +165,8 @@ export default function FormAlertRisk(props: any): JSX.Element {
       off: require(`../../../assets/images/risk/SISMOOff.png`),
       status: false,
       label: 'sismo',
+      text: 'sismo',
+
       value: 26,
     },
   ]);
@@ -273,21 +283,23 @@ export default function FormAlertRisk(props: any): JSX.Element {
 
           borderTopRightRadius: 50,
         }}>
-          <View style={{
-            justifyContent:"center",
-            flexDirection:"row"
+        <View
+          style={{
+            justifyContent: 'center',
+            flexDirection: 'row',
           }}>
-
-        <TouchableOpacity style={{
-          height:7,
-          width: '30%',
-          backgroundColor:"gray",
-          marginTop: hp('78%'),
-          borderRadius:20
-        }}/>
+          <TouchableOpacity
+            style={{
+              height: 7,
+              width: '30%',
+              backgroundColor: 'gray',
+              marginTop: hp('78%'),
+              borderRadius: 20,
+            }}
+          />
         </View>
 
-        <Text style={{fontSize: 18, textAlign: 'center', marginTop:hp('3%')}}>
+        <Text style={{fontSize: 18, textAlign: 'center', marginTop: hp('3%')}}>
           Seleccionar mi ubicación
         </Text>
 
@@ -377,8 +389,6 @@ export default function FormAlertRisk(props: any): JSX.Element {
             setValueRisk={setLevelRisk}
           />
         </View>
-
-    
 
         <Input
           multiline={true}
