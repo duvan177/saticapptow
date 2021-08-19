@@ -1,5 +1,5 @@
 export const DNS = {
-    host: 'https://fe5384bd35ce.ngrok.io/'
+    host: 'https://ef06094dab73.ngrok.io/'
 }
 
 export const ROUTES = {
