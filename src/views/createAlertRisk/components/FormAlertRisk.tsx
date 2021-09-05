@@ -217,14 +217,14 @@ export default function FormAlertRisk(props: any): JSX.Element {
           {
             maxWidth: 300,
             maxHeight: 550,
-            quality: 1,
-            videoQuality: 'low',
+            quality: 0,
+            
             mediaType: 'photo',
             includeBase64:true
           },
           (response: any) => {
             console.log(response)
-            if (!response?.idCancel) {
+            if (!response?.didCancel) {
               //  console.log('photo' ,response)
               setFilePath(response.assets[0].base64);
               setData({...dataForm, foto_riesgo: response.assets[0].base64});

@@ -146,7 +146,6 @@
 				6C97AB639B58BBB4B15BBE30 /* Pods-saticapp-saticappTests.debug.xcconfig */,
 				1D0AE47A65C8663E3B452821 /* Pods-saticapp-saticappTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -155,7 +154,6 @@
 			children = (
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

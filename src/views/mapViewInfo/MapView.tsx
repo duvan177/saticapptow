@@ -57,7 +57,7 @@ function MapaView(props: any) {
   const onMessage = (event: any): void => {
     const {data} = event.nativeEvent;
     const details = JSON.parse(data);
-    // console.log('press' , details , data);
+    console.log('press' , details);
     if(details.typeaction == 'GraphicsStation'){
       navigation.navigate('GraphicStationContainer', {
         screen: 'GraphicsStation',

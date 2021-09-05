@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {AlertsRisk, Profile, MapView , CreateAlertRisk, ViewAlert , AlertRiskDetail} from '../views';
+import {AlertsRisk, Profile, MapView , CreateAlertRisk, ViewAlert , AlertRiskDetail , ClimeTime} from '../views';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Icon} from 'react-native-elements';
 import { Image } from 'react-native';
@@ -49,6 +49,19 @@ const ProfileStackScreen = () => (
   </ProfileStack.Navigator>
 );
 
+const TimeClimeStackScreen = () => (
+  <ProfileStack.Navigator 
+  screenOptions={{
+    headerShown: false,
+  }}
+  >
+    <ProfileStack.Screen name="clime" component={ClimeTime} />
+  </ProfileStack.Navigator>
+);
+
+
+
+
 export default function HomeContainer() {
   return (
     <Tabs.Navigator
@@ -91,7 +104,7 @@ export default function HomeContainer() {
             style={{
               
             }}
-            size={size * 2}
+            size={size + 10}
             name="map-marker-radius"
             type="material-community"
             color={color}
@@ -102,6 +115,20 @@ export default function HomeContainer() {
         
         name="MapStackScreen"
         component={MapStackScreen}
+      />
+       <Tabs.Screen
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Icon
+              size={size}
+              name="cloud"
+              type="material-community"
+              color={color}
+            />
+          ),
+        }}
+        name="TimeClimeStackScreen"
+        component={TimeClimeStackScreen}
       />
 
          <Tabs.Screen

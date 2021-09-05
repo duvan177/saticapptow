@@ -6,10 +6,13 @@ import {
   ScrollView,
   ToastAndroid,
   TouchableOpacity,
+  Platform,
+  
 } from 'react-native';
 import {DATA} from './data';
 import moment from 'moment';
 const WIDTH = Dimensions.get('window').width;
+import Toast from 'react-native-simple-toast';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -46,6 +49,7 @@ const RenderItem = ({data}: any) => {
           paddingHorizontal: wp('3%'),
           marginHorizontal: wp('3%'),
           borderRadius: 20,
+       
         }}>
         <Text
           style={{
@@ -57,7 +61,7 @@ const RenderItem = ({data}: any) => {
         </Text>
         <Text
           style={{
-            fontSize: 15,
+            fontSize: 12,
             fontWeight: 'bold',
             color: '#424242',
           }}>
@@ -78,7 +82,8 @@ const RenderItem = ({data}: any) => {
             type="material-community"
             color={'#ff0e0e'}
           />
-          <Text>{dataMax}</Text>
+          <Text style={{textAlign:"center" , marginVertical:10}}>{dataMax}</Text>
+          <Text  style={{color:'gray' , fontWeight:"bold"}}>Dato máximo registrado</Text>
         </TouchableOpacity>
 
         <ProgressCircle
@@ -108,7 +113,12 @@ const RenderItem = ({data}: any) => {
         {data.id !== 'P' ? (
           <LineChart
             onDataPointClick={(e) => {
-              ToastAndroid.show(`Dato sensor: ${e.value}`, 100);
+              
+              if (Platform.OS === 'android') {
+                ToastAndroid.show(`Dato sensor: ${e.value}`, 100);
+              } else {
+                Toast.show('This is a toast.');
+              }
             }}
             data={{
               labels: reduceData(data?.labels) || ['cargando'],
@@ -287,6 +297,7 @@ export default function index(props: any) {
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: wp('3%'),
+          marginTop:hp('3%')
         }}>
         <Icon
           name="chevron-left"
@@ -301,7 +312,7 @@ export default function index(props: any) {
             fontWeight: 'bold',
             color: '#888888',
           }}>
-          Gráficos
+        Estación - Gráficos
         </Text>
         <Icon
           name="chart-areaspline"
