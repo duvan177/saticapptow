@@ -66,14 +66,13 @@ crossorigin="anonymous"
 
 <script type="text/javascript">
 const URLSERVIDOR = "http://10.12.4.47:5000";
+
 const socket = io(URLSERVIDOR);
 var data = [];
 var alarmas = [];
 var risks;
   const response  = async () =>{
     let res = await axios.get(`${URLSERVIDOR}/api/estaciones/entidades`);
-
-
     if(res.status !== 500 ){
       // data = res.data;
      const newData =  res.data.filter(item => item.nom_corto =='CVC' || item.nom_corto =='DAGMA');
@@ -81,9 +80,6 @@ var risks;
      console.log(newData);
      newData.length > 0 && setEstaciones();
     }
-
-
-
     console.log('estaciones' ,res.data)
     
   } 
@@ -528,8 +524,9 @@ try {
 
 
 function setRisks (item) {
+  const texto = item.RIESGO.replace(/ /g, "");
   var iconEstacion = L.icon({
-  iconUrl: `${URLSERVIDOR}/img/iconsrisk/${item.RIESGO.replace(/ /g, "")}On.png`,
+  iconUrl: `${URLSERVIDOR}/img/iconsrisk/${texto.toUpperCase()}On.png`,
   iconSize:     [40, 40], 
   shadowSize:   [20, 64], 
   iconAnchor:   [20, 54], 

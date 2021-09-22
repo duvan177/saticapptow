@@ -60,12 +60,12 @@ function index(props: any) {
   const [statusSendInfo, setStatusSendInfo] = useState(false);
 
   const findCoordinates = async () => {
-    // const granted = await PermissionsAndroid.request(
-    //   PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    // );
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
 
-    const gpsios =  Geolocation.requestAuthorization();
-    console.log('gps ios' , gpsios);
+    // const gpsios =  Geolocation.requestAuthorization();
+    // console.log('gps ios' , gpsios);
 
     // if (!(granted === PermissionsAndroid.RESULTS.GRANTED)) {
     //   Alert.alert(
@@ -75,11 +75,11 @@ function index(props: any) {
     //   return;
     // }
     setStatusGeo(true);
-    // Geolocation.getCurrentPosition(info =>  {
-    //   const {latitude: lat, longitude: lng } = info.coords;
-    //   setCoordenadas({lat , lng});
-    //   setStatusGeo(false)
-    // });
+    Geolocation.getCurrentPosition((info:any) =>  {
+      const {latitude: lat, longitude: lng } = info.coords;
+      setCoordenadas({lat , lng});
+      setStatusGeo(false)
+    });
     //  await Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition(
       (position: any) => {

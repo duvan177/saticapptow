@@ -22,7 +22,7 @@ export const login = async ({email, password } : DATA) => {
       status:true,
       data:response.data
     };
-  } catch (error) {
+  } catch (error:any) {
     
     return {
       status:false,
@@ -61,7 +61,7 @@ export const alertsRisk = async () => {
       data:response.data
     }
 
-  } catch (error) {
+  } catch (error:any) {
 
     return {
       status: false,
@@ -81,8 +81,28 @@ export const alertsRiskByUser = async () => {
       data:response.data
     }
 
-  } catch (error) {
+  } catch (error: any) {
     console.log(error)
+    return {
+      status: false,
+      data:error.response
+    }
+    
+  }
+}
+
+
+export const historyDataStation = async (id: number) => {
+  try {
+    // const AxiosConfig = await instanceAxios();
+    const response = await axios.get(ROUTES.GETHISTORYSTATION(id));
+    console.log(response)
+    return {
+      status:true,
+      data:response.data
+    }
+
+  } catch (error: any) {
     return {
       status: false,
       data:error.response

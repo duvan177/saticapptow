@@ -5,6 +5,7 @@ import {AlertsRisk, Profile, MapView , CreateAlertRisk, ViewAlert , AlertRiskDet
 import {createStackNavigator} from '@react-navigation/stack';
 import {Icon} from 'react-native-elements';
 import { Image } from 'react-native';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 const Tabs = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -27,15 +28,13 @@ const AlertStackScreen = () => (
 );
 const MapStackScreen = () => (
   <HomeStack.Navigator
-    defaultScreenOptions={{
-    
-    }}
     >
 
     <HomeStack.Screen options={{
       headerShown:false,
-      headerStyle:{marginTop:30}
-    }} name="MapInfo" component={MapView} />
+    }}
+    
+    name="MapInfo" component={MapView} />
   </HomeStack.Navigator>
 );
 
@@ -67,17 +66,20 @@ export default function HomeContainer() {
     <Tabs.Navigator
       screenOptions={{
         headerShown:false,
+        tabBarStyle:{
+            
+            height:heightPercentageToDP('8%'),
+            borderTopStartRadius:20,
+            borderTopRightRadius:20
         
+        }
       }}
 
       initialRouteName="MapStackScreen"
       tabBarOptions={{
         activeTintColor: '#25375b',
-        style:{
-          height:60,
-          borderTopStartRadius:20,
-          borderTopRightRadius:20
-        },
+   
+      
         showLabel:false
         
       }}>

@@ -37,7 +37,7 @@ export default function (props: any) {
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingHorizontal: wp('3%'),
-                    marginTop: hp('3%')
+                    // marginTop: hp('3%')
                 }}>
                 <Icon
                     name="chevron-left"

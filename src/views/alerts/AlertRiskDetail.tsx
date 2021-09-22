@@ -81,6 +81,7 @@ export default function AlertRiskDetail(props: any) {
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: wp('3%'),
+            
         }}>
         <Icon
           name="chevron-left"
@@ -103,7 +104,7 @@ export default function AlertRiskDetail(props: any) {
       <Animated.View
         style={{
           position: 'absolute',
-          top: hp('12%'),
+          top: hp('8%'),
           left: 0,
           right: 0,
           // marginBottom:-30,
@@ -129,7 +130,12 @@ export default function AlertRiskDetail(props: any) {
   `}
             nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
             javaScriptEnabled={true}
-            source={require('../../assets/html/html_script_Onclick_risk.html')}
+            source={{
+              
+                uri: 'file:///android_asset/html_script_Onclick_risk.html',
+                baseUrl: 'file:///android_asset/',
+              }
+            }
             startInLoadingState={true}
             // renderLoading={LoadingIndicatorView}
             // onMessage={onMessage}
@@ -170,6 +176,7 @@ export default function AlertRiskDetail(props: any) {
         // contentContainerStyle={{paddingTop:hp('40%')}}
         scrollEventThrottle={1}
         showsVerticalScrollIndicator={false}
+      
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: offset } } }],
           { useNativeDriver: false },
@@ -193,7 +200,7 @@ export default function AlertRiskDetail(props: any) {
                 marginBottom: 20,
                 fontWeight: 'bold',
               }}>
-              {detail.RIESGO}
+              {detail.RIESGO.toUpperCase()}
             </Text>
             <Badge
               status={

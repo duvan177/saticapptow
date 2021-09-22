@@ -7,7 +7,8 @@ import {
   ToastAndroid,
   TouchableOpacity,
   Platform,
-  
+  RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import {DATA} from './data';
 import moment from 'moment';
@@ -27,6 +28,7 @@ import {
   StackedBarChart,
 } from 'react-native-chart-kit';
 import {Icon} from 'react-native-elements';
+import {historyDataStation} from '../../api/user.routes';
 const reduceData = (array: any) => {
   const newData = array.slice(array.length - 20, array.length + 1);
   return newData;
@@ -49,7 +51,6 @@ const RenderItem = ({data}: any) => {
           paddingHorizontal: wp('3%'),
           marginHorizontal: wp('3%'),
           borderRadius: 20,
-       
         }}>
         <Text
           style={{
@@ -82,8 +83,12 @@ const RenderItem = ({data}: any) => {
             type="material-community"
             color={'#ff0e0e'}
           />
-          <Text style={{textAlign:"center" , marginVertical:10}}>{dataMax}</Text>
-          <Text  style={{color:'gray' , fontWeight:"bold"}}>Dato máximo registrado</Text>
+          <Text style={{textAlign: 'center', marginVertical: 10}}>
+            {dataMax}
+          </Text>
+          <Text style={{color: 'gray', fontWeight: 'bold'}}>
+            Dato máximo registrado
+          </Text>
         </TouchableOpacity>
 
         <ProgressCircle
@@ -112,8 +117,7 @@ const RenderItem = ({data}: any) => {
       >
         {data.id !== 'P' ? (
           <LineChart
-            onDataPointClick={(e) => {
-              
+            onDataPointClick={(e: any) => {
               if (Platform.OS === 'android') {
                 ToastAndroid.show(`Dato sensor: ${e.value}`, 100);
               } else {
@@ -128,11 +132,12 @@ const RenderItem = ({data}: any) => {
                 },
               ],
             }}
-            verticalLabelRotation={0}
+            verticalLabelRotation={20}
             width={Dimensions.get('window').width * 3} // from react-native
-            height={300}
+            height={hp('40%')}
             yAxisLabel=""
             yAxisSuffix=""
+            fromZero={true}
             // renderDotContent={(x)=><Text>12</Text>}
             yAxisInterval={1} // optional, defaults to 1
             chartConfig={{
@@ -151,6 +156,7 @@ const RenderItem = ({data}: any) => {
                 strokeWidth: '2',
                 stroke: '#ffffff',
               },
+              
             }}
             //  decorator={()=><Text>hola</Text>}
             bezier
@@ -173,9 +179,9 @@ const RenderItem = ({data}: any) => {
                   },
                 ],
               }}
-              verticalLabelRotation={0}
+              verticalLabelRotation={20}
               width={Dimensions.get('window').width * 3} // from react-native
-              height={300}
+              height={hp('40%')}
               yAxisLabel=""
               yAxisSuffix=""
               showValuesOnTopOfBars={true}
@@ -213,27 +219,42 @@ const RenderItem = ({data}: any) => {
   );
 };
 export default function index(props: any) {
-  const {navigation} = props;
+  const {navigation, route} = props;
+  const [refreshing, setRefreshing] = React.useState(false);
   const [dataGraphics, setDataGraphics]: any = useState([]);
-  const transformData = () => {
-    const dataIndex = Object.keys(DATA[0]);
+  const [loadingData, setLoadingData] = useState(true);
 
+  const onRefresh = React.useCallback(async () => {
+    setLoadingData(true);
+    await transformData();
+    setLoadingData(false);
+  }, []);
+  const transformData = async () => {
+    setLoadingData(true);
+    const responseData: any = await historyDataStation(
+      route.params.data.id_estacion,
+    );
+
+    console.log('response data', route.params.data.nom_estacion);
+    setLoadingData(false);
+    if (!responseData.status) return;
+
+    const dataIndex = Object.keys(responseData?.data[0]);
     const data: any = dataIndex.map((item: any) => {
-      const labels = DATA[0][item].map((obj: any) =>
-        moment(obj.fecha_registro_dato_sensor).format('LT'),
+      const labels = responseData?.data[0][item].map((obj: any) =>
+        moment(obj.fecha_registro_dato_sensor).format('h:mm:ss a'),
       );
-      const datasets = DATA[0][item].map((obj: any) =>
+      const datasets = responseData?.data[0][item].map((obj: any) =>
         item == 'P' ? obj.acumulado : obj.dato_sensor,
       );
 
-      const endDataInfo = DATA[0][item][DATA[0][item].length - 1];
+      const endDataInfo =
+        responseData?.data[0][item][responseData?.data[0][item].length - 1];
 
-      
-      
       const datoSensor =
-      item == 'P' ? parseInt(endDataInfo.acumulado) : endDataInfo.dato_sensor;
-      const percentage = (100 *  datoSensor) / endDataInfo.roja;
-   
+        item == 'P' ? parseInt(endDataInfo.acumulado) : endDataInfo.dato_sensor;
+      const percentage = (100 * datoSensor) / endDataInfo.roja;
+
       let status;
       if (
         !(
@@ -265,13 +286,12 @@ export default function index(props: any) {
         datasets: datasets,
         infoSensor: endDataInfo,
         status: status,
-        percentage:percentage
+        percentage: percentage,
       };
     });
-    // const reduceData = data.slice(data.length - 20 , data.length )
+
     setDataGraphics(data);
-    console.log(data);
-    // console.log(reduceData);
+    return true;
   };
 
   const MapDataGraphics = ({data}: any) => {
@@ -285,6 +305,7 @@ export default function index(props: any) {
 
   useEffect(() => {
     transformData();
+    // console.log('data graphics' , route.params.data)
   }, []);
 
   return (
@@ -297,7 +318,7 @@ export default function index(props: any) {
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: wp('3%'),
-          marginTop:hp('3%')
+          marginTop: hp('3%'),
         }}>
         <Icon
           name="chevron-left"
@@ -312,7 +333,7 @@ export default function index(props: any) {
             fontWeight: 'bold',
             color: '#888888',
           }}>
-        Estación - Gráficos
+          Estación {route.params.data.nom_estacion}
         </Text>
         <Icon
           name="chart-areaspline"
@@ -321,12 +342,40 @@ export default function index(props: any) {
         />
       </View>
       <ScrollView
-        style={
-          {
-            //   marginBottom:200
-          }
+        refreshControl={
+          <RefreshControl
+            style={{justifyContent: 'center', marginTop: hp('4%')}}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
         }>
-        <MapDataGraphics data={dataGraphics} />
+        {loadingData ? (
+          <View style={{justifyContent: 'center', flex: 1, height: hp('100%')}}>
+            <ActivityIndicator size="large" color="#25375b" />
+          </View>
+        ) : (
+          <>
+            {dataGraphics.length == 0 ? (
+              <View
+                style={{
+                  height: hp('100%'),
+                  backgroundColor: 'white',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                  }}>
+                  No se escontró datos para mostrar
+                </Text>
+              </View>
+            ) : (
+              <MapDataGraphics data={dataGraphics} />
+            )}
+          </>
+        )}
       </ScrollView>
     </View>
   );

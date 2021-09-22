@@ -43,7 +43,11 @@ setTimeout(function(){
       originWhitelist={['*']}
       nativeConfig={{props: {webContentsDebuggingEnabled: true}}}
       javaScriptEnabled={true}
-      source={require('../../../assets/html/html_script_Onclick.html')}
+      source={{
+          
+        uri: 'file:///android_asset/html_script_Onclick.html',
+        baseUrl: 'file:///android_asset/',
+      }}
       startInLoadingState={true}
       renderLoading={LoadingIndicatorView}
       onMessage={onMessage}

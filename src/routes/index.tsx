@@ -77,16 +77,25 @@ export default function Root() {
         
         screenOptions={{
           headerShown: false,
+            
         }}>
         <AuthStack.Screen
           name="GraphicStationContainer"
           component={GraphicStationContainer}
         />
         <AuthStack.Screen
+          options={{
+            headerShown:false     
+             }}
           name="AlertRiskStackContainer"
           component={AlertRiskContainer}
         />
-        <AuthStack.Screen name="HomeStackContainer" component={HomeContainer} />
+        <AuthStack.Screen
+        options={{
+          headerShown:false     
+           }}
+        name="HomeStackContainer" 
+        component={HomeContainer} />
         <AuthStack.Screen
           name="LoginStackContainer"
           component={LoginContainer}
