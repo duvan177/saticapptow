@@ -64,19 +64,22 @@ function index(props: any) {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     );
 
-    if (!(granted === PermissionsAndroid.RESULTS.GRANTED)) {
-      Alert.alert(
-        'Error en ubicación',
-        'revisa si la ubicacíon GPS esta activada',
-      );
-      return;
-    }
+    // const gpsios =  Geolocation.requestAuthorization();
+    // console.log('gps ios' , gpsios);
+
+    // if (!(granted === PermissionsAndroid.RESULTS.GRANTED)) {
+    //   Alert.alert(
+    //     'Error en ubicación',
+    //     'revisa si la ubicacíon GPS esta activada',
+    //   );
+    //   return;
+    // }
     setStatusGeo(true);
-    // Geolocation.getCurrentPosition(info =>  {
-    //   const {latitude: lat, longitude: lng } = info.coords;
-    //   setCoordenadas({lat , lng});
-    //   setStatusGeo(false)
-    // });
+    Geolocation.getCurrentPosition((info:any) =>  {
+      const {latitude: lat, longitude: lng } = info.coords;
+      setCoordenadas({lat , lng});
+      setStatusGeo(false)
+    });
     //  await Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition(
       (position: any) => {

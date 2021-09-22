@@ -1,34 +1,51 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '10.0'
+platform :ios, '11.0'
 
-target 'saticapptow' do
+target 'saticapp' do
   config = use_native_modules!
 
-  use_react_native!(:path => config["reactNativePath"])
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # to enable hermes on iOS, change `false` to `true` and then install pods
+    :hermes_enabled => false
+  )
 
 
-  target 'saticapptowTests' do
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
+  target 'saticappTests' do
     inherit! :complete
     # Pods for testing
   end
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
-  # you should disable these next few lines.
-  use_flipper!
+  # you should disable the next line.
+  # use_flipper!()
+
+  # post_install do |installer|
+  #   react_native_post_install(installer)
+  # end
   post_install do |installer|
-    flipper_post_install(installer)
-  end
-end
+    installer.pods_project.targets.each do |target|
 
-target 'saticapptow-tvOS' do
-  # Pods for saticapptow-tvOS
+      # The following is needed to ensure the "archive" step works in XCode.
+      # It removes React & Yoga from the Pods project, as it is already included in the main project.
+      # Without this, you'd see errors when you archive like:
+      # "Multiple commands produce ... libReact.a"
+      # "Multiple commands produce ... libyoga.a"
 
-  target 'saticapptow-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
+      targets_to_ignore = %w(React yoga)
+      
+      if targets_to_ignore.include? target.name
+        target.remove_from_project
+      end
+
+    end
   end
+
 end

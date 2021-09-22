@@ -11,10 +11,9 @@ import {
 } from 'react-native';
 import {Input, Overlay} from 'react-native-elements';
 import {Picker} from '@react-native-picker/picker';
-import Slider from '@react-native-community/slider';
 // import ImagePicker from 'react-native-image-picker';
 import JSONLEVEL from '../../../tools/levelRisk';
-import PickerImage from 'react-native-image-picker';
+var PickerImage =  require('react-native-image-picker');
 import {RNCamera} from 'react-native-camera';
 import {
   widthPercentageToDP as wp,
@@ -218,16 +217,17 @@ export default function FormAlertRisk(props: any): JSX.Element {
           {
             maxWidth: 300,
             maxHeight: 550,
-            quality: 1,
-            videoQuality: 'low',
-            durationLimit: 30, //Video max duration in seconds
+            quality: 0,
+            
             mediaType: 'photo',
+            includeBase64:true
           },
           (response: any) => {
-            if (!response?.idCancel) {
+            console.log(response)
+            if (!response?.didCancel) {
               //  console.log('photo' ,response)
-              setFilePath(response.data);
-              setData({...dataForm, foto_riesgo: response.data});
+              setFilePath(response.assets[0].base64);
+              setData({...dataForm, foto_riesgo: response.assets[0].base64});
               // console.log(response);
             }
           },
@@ -371,7 +371,7 @@ export default function FormAlertRisk(props: any): JSX.Element {
                 </Text>
               </View>
             ) : (
-              <Text>{JSONLEVEL[labelTypeRisk]?.[labelLevelTypeRisk]}</Text>
+              <Text style={{textAlign:'justify'}}>{JSONLEVEL[labelTypeRisk]?.[labelLevelTypeRisk]}</Text>
             )}
           </>
         </View>
@@ -434,7 +434,7 @@ export default function FormAlertRisk(props: any): JSX.Element {
               style={[styles.TouchableOpacityButton, {marginTop: 10}]}>
               <Text
                 style={{
-                  fontFamily: 'Lato-Regular',
+                 
                   fontSize: 14,
                   color: 'white',
                   textAlign: 'center',
@@ -498,7 +498,7 @@ export default function FormAlertRisk(props: any): JSX.Element {
             style={[styles.ButtonCancel]}>
             <Text
               style={{
-                fontFamily: 'Lato-Regular',
+                
                 fontSize: 14,
                 color: 'white',
                 textAlign: 'center',
@@ -511,7 +511,7 @@ export default function FormAlertRisk(props: any): JSX.Element {
             style={[styles.ButtonSave]}>
             <Text
               style={{
-                fontFamily: 'Lato-Regular',
+               
                 fontSize: 14,
                 color: 'white',
                 textAlign: 'center',

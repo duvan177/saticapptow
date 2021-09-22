@@ -57,13 +57,13 @@ function MapaView(props: any) {
   const onMessage = (event: any): void => {
     const {data} = event.nativeEvent;
     const details = JSON.parse(data);
-    console.log('press' , details);
+    // console.log('press' , details);
     if(details.typeaction == 'GraphicsStation'){
       navigation.navigate('GraphicStationContainer', {
         screen: 'GraphicsStation',
+        params:{data: details.data}
       });
     }else {
-
       navigation.navigate('AlertRiskStackContainer', {
           screen: 'AlertRiskDetail',
           params: {detail: details.data},
@@ -71,6 +71,8 @@ function MapaView(props: any) {
       }
 
   };
+
+
 
   return (
     <>
@@ -88,16 +90,19 @@ function MapaView(props: any) {
         // />
 
         <WebView
+        
           renderLoading={LoadingIndicatorView}
           ref={Map}
           originWhitelist={['*']}
           source={{
-            uri: 'file:///android_asset/html_script.html',
+            uri: 'file:///android_asset/html_script_.html',
             baseUrl: 'file:///android_asset/',
           }}
+          useWebKit
           onMessage={onMessage}
           // source={{uri: 'https://mapviewsatic.000webhostapp.com/'}}
           // source={{html:Html}}
+          
           automaticallyAdjustContentInsets={false}
           allowFileAccess={true}
           allowUniversalAccessFromFileURLs={true}
