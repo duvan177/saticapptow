@@ -1,6 +1,6 @@
 import React, {Component, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 // import { Login , CreateAccount} from '../views'
 import HomeContainer from './HomeContainer';
 import LoginContainer from './LoginContainer';
@@ -77,15 +77,21 @@ export default function Root() {
         
         screenOptions={{
           headerShown: false,
-            
+      
         }}>
         <AuthStack.Screen
+          options={{
+            cardStyleInterpolator:CardStyleInterpolators.forModalPresentationIOS
+          }}
           name="GraphicStationContainer"
           component={GraphicStationContainer}
         />
         <AuthStack.Screen
+
           options={{
-            headerShown:false     
+            headerShown:false,
+            cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS   
+              
              }}
           name="AlertRiskStackContainer"
           component={AlertRiskContainer}

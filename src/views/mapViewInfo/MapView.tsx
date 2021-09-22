@@ -8,6 +8,7 @@ import ActionButton from 'react-native-action-button';
 import {addUser} from '../../store/actions';
 import {connect} from 'react-redux';
 import {Icon} from 'react-native-elements';
+import { heightPercentageToDP } from 'react-native-responsive-screen';
 function MapaView(props: any) {
   const {navigation, user} = props;
 
@@ -117,16 +118,22 @@ function MapaView(props: any) {
       )}
 
       <ActionButton
+      style={{
+        marginBottom:heightPercentageToDP('9%')
+       }}
+
         shadowStyle={{
           shadowColor: '#000',
           shadowOffset: {
             width: 0,
             height: 2,
+            
           },
           shadowOpacity: 0.23,
           shadowRadius: 2.62,
-
+          
           elevation: 5,
+          
         }}
         fixNativeFeedbackRadius={true}
         onPress={() => {

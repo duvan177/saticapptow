@@ -2,13 +2,14 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {AlertsRisk, Profile, MapView , CreateAlertRisk, ViewAlert , AlertRiskDetail , ClimeTime} from '../views';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, CardStyleInterpolators, TransitionSpecs} from '@react-navigation/stack';
 import {Icon} from 'react-native-elements';
 import { Image } from 'react-native';
-import { heightPercentageToDP } from 'react-native-responsive-screen';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 
 const Tabs = createBottomTabNavigator();
-const HomeStack = createStackNavigator();
+const HomeStack = createStackNavigator(
+);
 const ProfileStack = createStackNavigator();
 const AlertStack = createStackNavigator();
 
@@ -16,12 +17,22 @@ const AlertStack = createStackNavigator();
 const AlertStackScreen = () => (
   <AlertStack.Navigator
     initialRouteName="Alerts"
+    
     screenOptions={{
       headerShown: false,
+      // cardStyleInterpolator:CardStyleInterpolators.forBottomSheetAndroid,
       
     }}>
     <AlertStack.Screen name="Alerts" component={AlertsRisk} />
-    <AlertStack.Screen name="ViewAlert" component={ViewAlert} />
+    <AlertStack.Screen 
+
+options={{
+  transitionSpec: {
+    open: TransitionSpecs.TransitionIOSSpec,
+    close: TransitionSpecs.TransitionIOSSpec,
+  },
+}}
+    name="ViewAlert" component={ViewAlert} />
 
 
   </AlertStack.Navigator>
@@ -32,6 +43,7 @@ const MapStackScreen = () => (
 
     <HomeStack.Screen options={{
       headerShown:false,
+ 
     }}
     
     name="MapInfo" component={MapView} />
@@ -64,13 +76,20 @@ const TimeClimeStackScreen = () => (
 export default function HomeContainer() {
   return (
     <Tabs.Navigator
+    
       screenOptions={{
+        
         headerShown:false,
         tabBarStyle:{
             
             height:heightPercentageToDP('8%'),
-            borderTopStartRadius:20,
-            borderTopRightRadius:20
+            width: widthPercentageToDP('70%'),
+            
+            borderRadius:20,
+            position: 'absolute',
+            left: widthPercentageToDP('15%'),
+            right: widthPercentageToDP('15%'),
+            bottom: heightPercentageToDP('2%')
         
         }
       }}
@@ -78,8 +97,6 @@ export default function HomeContainer() {
       initialRouteName="MapStackScreen"
       tabBarOptions={{
         activeTintColor: '#25375b',
-   
-      
         showLabel:false
         
       }}>
@@ -88,7 +105,7 @@ export default function HomeContainer() {
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon
-              size={size}
+              size={size+5}
               name="bell-ring"
               type="material-community"
               color={color}
@@ -106,7 +123,7 @@ export default function HomeContainer() {
             style={{
               
             }}
-            size={size + 10}
+            size={size+10}
             name="map-marker-radius"
             type="material-community"
             color={color}
@@ -120,9 +137,10 @@ export default function HomeContainer() {
       />
        <Tabs.Screen
         options={{
+          
           tabBarIcon: ({color, size}) => (
             <Icon
-              size={size}
+              size={size+10}
               name="cloud"
               type="material-community"
               color={color}
@@ -134,16 +152,19 @@ export default function HomeContainer() {
       />
 
          <Tabs.Screen
+         
         options={{
+          
           tabBarIcon: ({color, size}) => (
             <Icon
-              size={size}
+              size={size+10}
               name="account"
               type="material-community"
               color={color}
             />
           ),
         }}
+
         name="ProfileStackScreen"
         component={ProfileStackScreen}
       />
