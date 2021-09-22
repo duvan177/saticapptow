@@ -7,7 +7,7 @@ import CreateAlertRisk from './createAlertRisk'
 import ViewAlert from "./home/ViewAlert";
 import AlertRiskDetail from "./alerts/AlertRiskDetail";
 import GraphicsStation from './graphicsStation'
-
+import ClimeTime from './climetime'
  
 
 export {
@@ -19,5 +19,6 @@ export {
     CreateAlertRisk,
     ViewAlert,
     AlertRiskDetail,
-    GraphicsStation
+    GraphicsStation,
+    ClimeTime
 }

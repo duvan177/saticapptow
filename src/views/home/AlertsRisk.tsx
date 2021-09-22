@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -9,13 +9,13 @@ import {
   Image,
   Platform,
 } from 'react-native';
-import {Button, Card, Icon} from 'react-native-elements';
+import { Button, Card, Icon } from 'react-native-elements';
 import {
   FlatList,
   ScrollView,
   TouchableOpacity,
 } from 'react-native-gesture-handler';
-import {userRoutes} from '../../api';
+import { userRoutes } from '../../api';
 import DeviceInfo from 'react-native-device-info';
 // import moment from 'moment'
 import moment from 'moment';
@@ -122,7 +122,7 @@ const setItemImage = (id: any) => {
   return risk[0]?.['on'];
 };
 
-const Item = ({title, description, id, idTypeRisk, date, action}: any) => (
+const Item = ({ title, description, id, idTypeRisk, date, action }: any) => (
   <TouchableOpacity
     activeOpacity={1}
     style={{
@@ -142,23 +142,28 @@ const Item = ({title, description, id, idTypeRisk, date, action}: any) => (
       shadowRadius: 2.62,
       elevation: 4,
     }}>
-    <View style={{flex: 1, flexDirection: 'row'}}>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, flexDirection: 'row' }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Image
           // style={styles.tinyLogo}
           resizeMode="stretch"
-          style={{width: 40, height: 40}}
+          style={{ width: 40, height: 40 }}
           source={setItemImage(idTypeRisk)}
         />
       </View>
 
-      <View style={{flex: 2, justifyContent: 'center'}}>
-        <Card.Title style={{textAlign: 'left' , fontWeight:"bold"}}>{title} </Card.Title>
-        <Text style={{marginBottom: 10, color: '#7a7a7a'}}>
-          {moment(date).locale('es').format('MMMM Do YYYY, h:mm:ss a')}
+      <View style={{ flex: 2, justifyContent: 'center' }}>
+        <Card.Title style={{ textAlign: 'left', fontWeight: "bold" }}>{(title).toUpperCase()} </Card.Title>
+        <Text style={{ marginBottom: 10, color: '#7a7a7a' }}>
+        { moment(date).startOf('hour').fromNow()}
         </Text>
+        {/* <Text style={{ marginBottom: 10, color: '#7a7a7a' }}>
+          {moment(date).locale('es').format('L h:mm:ss a')}
+        </Text> */}
+
+      
       </View>
-      <View style={{flex: 1, justifyContent: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
         <Icon
           name="chevron-right"
           type="material-community"
@@ -190,42 +195,26 @@ const wait = (timeout: any) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-function alertsRisk({navigation , user , risks , risksByUser}: any) {
+function alertsRisk({ navigation, user, risks, risksByUser }: any) {
   const [dataRisks, setDataRisks] = useState([]);
   const [statusGetRisks, setStatusGetRisks] = useState(true);
   // const [refreshing, setrefreshing] = useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
   const [meAlerts, setMeAlerts] = useState([]);
   const getRisks = async () => {
-    // setrefreshing(true);
-    // const responseMeAlerts = await userRoutes.alertsRiskByUser();
-    // responseMeAlerts.status && setMeAlerts(responseMeAlerts.data);
-
-    // console.log('mis alertas', responseMeAlerts);
-    // const response = await userRoutes.alertsRisk();
-
-    // // setrefreshing(false);
     setStatusGetRisks(false);
-
-    // response.status
-    //   ? setFilterData(response.data)
-    //   : Alert.alert(
-    //       '',
-    //       'error en obtener información, espera unos minutos. Gracias',
-    //     );
-    console.log('riesgos get api', risks);
+    // console.log('riesgos get api', risks);
   };
   const setFilterData = async (data: any) => {
-    const filterAlerts = data.filter((item: any) => item.ID_ESTADO === 43);
+    const filterAlerts = data.filter((item: any) => item.ID_ESTADO === 21);
     // !(risks.length == filterAlerts.length) && notifi();
     setDataRisks(filterAlerts);
     return true
-    // console.log(filterAlerts);
   };
   const navigateDetail = (data: any) =>
     navigation.navigate('AlertRiskStackContainer', {
       screen: 'AlertRiskDetail',
-      params: {detail: data},
+      params: { detail: data },
     });
 
   const notifi = () => {
@@ -253,7 +242,7 @@ function alertsRisk({navigation , user , risks , risksByUser}: any) {
 
   useEffect(() => {
     // console.log('riesgos' ,risks)
-    
+
     setFilterData(risks)
     setStatusGetRisks(false);
     // setDataRisks(risks)
@@ -266,7 +255,7 @@ function alertsRisk({navigation , user , risks , risksByUser}: any) {
     console.log('entré a notificaciones');
   };
 
-  const renderItem = ({item}: any) => (
+  const renderItem = ({ item }: any) => (
     <Item
       action={() => navigateDetail(item)}
       key={`${item.ID_TICKET}`}
@@ -279,13 +268,13 @@ function alertsRisk({navigation , user , risks , risksByUser}: any) {
   );
 
 
-  const _renderItem = ({item, index}: any) => {
+  const _renderItem = ({ item, index }: any) => {
     return (
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => navigateDetail(item)}
         style={{
-          backgroundColor: '#1447ad',
+          backgroundColor: '#25375b',
           borderRadius: 20,
           height: hp('18%'),
           padding: wp('5%'),
@@ -302,111 +291,116 @@ function alertsRisk({navigation , user , risks , risksByUser}: any) {
 
           elevation: 18,
         }}>
-        <Text style={{fontSize: 15, color: 'white'}}>{item.RIESGO}</Text>
-        <Text style={{color: 'white', fontSize: 15, marginVertical: 10}}>
+        <Text style={{ fontSize: 15, color: 'white' }}>{(item.RIESGO).toUpperCase()}</Text>
+        <Text style={{ color: 'white', fontSize: 15, marginVertical: 10 }}>
           Estado: {item.ESTADO_ALARMA}
         </Text>
-        <Text style={{color: 'white', fontSize: 14}}>
-          Fecha: {moment(item.FECHA_CREA).format('YYYY MM DD HH:mm a')}
+        <Text style={{ color: 'white', fontSize: 14 }}>
+        { moment(item.FECHA_CREA).startOf('hour').fromNow()}
         </Text>
+        {/* <Text style={{ color: 'white', fontSize: 14 }}>
+          {moment(item.FECHA_CREA).format('LL')}
+        </Text> */}
+         
       </TouchableOpacity>
     );
   };
 
   return (
     <>
-      <SafeAreaView style={{flex: 1}}>
-        <ScrollView
+      <View style={{ flex: 1 }}>
+        {/* <ScrollView
           contentContainerStyle={{
             flex: 1,
           }}
-          refreshControl={
-            <RefreshControl
-              style={{justifyContent: 'center'}}
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-            />
-          }>
-          <View style={{flex: 1, backgroundColor: 'white'}}>
-            {statusGetRisks ? (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignContent: 'center',
-                }}>
-                <ActivityIndicator color={'#1447ad'} size={50} />
-                <Text style={{textAlign: 'center'}}>Obteniendo alertas...</Text>
-              </View>
-            ) : (
-              <>
-              {
-                Object.values(user).length > 0 && (
-                   <View
-                  style={{
-                    height: hp('35%'),
-                  }}>
-                  <Text
+          showsVerticalScrollIndicator={true}
+        > */}
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+          {statusGetRisks ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignContent: 'center',
+              }}>
+              <ActivityIndicator color={'#1447ad'} size={50} />
+              <Text style={{ textAlign: 'center' }}>Obteniendo alertas...</Text>
+            </View>
+          ) : (
+            <>
+
+
+
+              <FlatList
+                refreshControl={
+                  <RefreshControl
+                    style={{ justifyContent: 'center' , marginTop:hp('4%') }}
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+                ListHeaderComponent={
+                  <>
+                  {
+                    Object.values(user).length > 0  &&  <Text
                     style={{
                       fontSize: 18,
                       marginBottom: 10,
-                      marginTop: 40,
+                      // marginTop: 40,
                       marginHorizontal: 20,
                       fontWeight: 'bold',
                       color: '#9b9b9b',
                     }}>
                     Mis alertas
                   </Text>
-                  <Carousel
-                    contentContainerStyle={{
-                      width: 100,
-                      shadowColor: '#343a40',
-                      shadowOffset: {
-                        width: 0,
-                        height: 13,
-                      },
-                      shadowOpacity: 0.35,
-                      shadowRadius: 14.3,
-                    }}
-                    layout={'default'}
-                    inactiveSlideScale={0.7}
-                    indicatorStyle={'black'}
-                    contentContainerCustomStyle={{}}
-                    // ref={(ref) => (this.carousel = ref)}
-                    data={meAlerts}
-                    itemHeight={400}
-                    sliderHeight={hp('20%')}
-                    sliderWidth={400}
-                    itemWidth={250}
-                    renderItem={_renderItem}
+                  }
+                   
+                    <Carousel
+                      contentContainerStyle={{
+                        width: 100,
+                        shadowColor: '#343a40',
+                        shadowOffset: {
+                          width: 0,
+                          height: 13,
+                        },
+                        shadowOpacity: 0.35,
+                        shadowRadius: 14.3,
+                      }}
+                      layout={'default'}
+                      inactiveSlideScale={0.7}
+                      indicatorStyle={'black'}
+                      contentContainerCustomStyle={{}}
+                      // ref={(ref) => (this.carousel = ref)}
+                      data={meAlerts}
+                      itemHeight={400}
+                      sliderHeight={hp('20%')}
+                      sliderWidth={400}
+                      itemWidth={250}
+                      renderItem={_renderItem}
                     // onSnapToItem={(index) => setState({activeIndex: index})}
-                  />
-                </View>
-
-                )
-              }
-               
-                <Text
-                  style={{
-                    fontSize: 18,
-                    marginBottom: 10,
-                    marginTop: hp('1%'),
-                    marginHorizontal: 20,
-                    fontWeight: 'bold',
-                    color: '#9b9b9b',
-                  }}>
-                  Alertas recientes
-                </Text>
-                <FlatList
-                  data={dataRisks}
-                  renderItem={renderItem}
-                  keyExtractor={(item: any) => `${item.ID_TICKET}`}
-                />
-              </>
-            )}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+                    />
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        marginBottom: 10,
+                        // marginTop: hp('1%'),
+                        marginHorizontal: 20,
+                        fontWeight: 'bold',
+                        color: '#9b9b9b',
+                      }}>
+                      Alertas recientes
+                    </Text>
+                  </>
+                }
+                data={dataRisks}
+                renderItem={renderItem}
+                keyExtractor={(item: any) => `${item.ID_TICKET}`}
+              />
+            </>
+          )}
+        </View>
+        {/* </ScrollView> */}
+      </View>
     </>
   );
 }
@@ -415,7 +409,7 @@ const mapStateToProps = (state: any) => {
   return {
     user: state.userReducer.user,
     risks: state.riskReducer.risks,
-    risksByUser : state.userReducer.risks
+    risksByUser: state.userReducer.risks
   };
 };
 

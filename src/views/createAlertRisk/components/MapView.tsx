@@ -27,7 +27,7 @@ setTimeout(function(){
     const {data} = event.nativeEvent;
     setCoordenadas(data);
     setData({...dataForm , coordenadas: data})
-    // console.log(data);
+    console.log('clik mapa' , data);
   };
   const LoadingIndicatorView = () => {
     return <ActivityIndicator color="#009b88" size="large" />;
@@ -44,6 +44,7 @@ setTimeout(function(){
       nativeConfig={{props: {webContentsDebuggingEnabled: true}}}
       javaScriptEnabled={true}
       source={{
+          
         uri: 'file:///android_asset/html_script_Onclick.html',
         baseUrl: 'file:///android_asset/',
       }}

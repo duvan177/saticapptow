@@ -17,13 +17,12 @@ import {connect} from 'react-redux';
 import {userRoutes} from '../../api';
 const WIDTH = Dimensions.get('window').width;
 import {useForm, Controller} from 'react-hook-form';
-import {storeNode} from 'esri/widgets/support/widget';
 import {ButtonBackCoomponent} from '../../components';
 import {COLORS} from '../../constants/color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 function LoginSensorHumano(props: any): JSX.Element {
   const {navigation, addUser, user} = props;
-  const {register, handleSubmit, control, watch, errors} = useForm();
+  const {register, handleSubmit, control, watch , formState: { errors }} = useForm();
   const [email, setEmail]: any = useState('');
   const [password, setPassword]: any = useState('');
   const [statusLogin, setstatusLogin] = useState(false);
@@ -83,7 +82,7 @@ function LoginSensorHumano(props: any): JSX.Element {
                 name="email"
                 defaultValue=""
                 control={control}
-                render={({onChange, value}) => (
+                render={({field: {onChange, value}}) => (
                   <Input
                     keyboardType={'email-address'}
                     underlineColorAndroid="transparent"
@@ -132,7 +131,7 @@ function LoginSensorHumano(props: any): JSX.Element {
                 name="password"
                 defaultValue=""
                 control={control}
-                render={({onChange, value}) => (
+                render={({field: {onChange, value}}) => (
                   <Input
                     underlineColorAndroid="transparent"
                     style={{}}

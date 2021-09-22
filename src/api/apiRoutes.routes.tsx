@@ -1,5 +1,5 @@
 export const DNS = {
-    host: 'https://fe5384bd35ce.ngrok.io/'
+    host: 'http://10.12.4.47:5000/'
 }
 
 export const ROUTES = {
@@ -9,4 +9,5 @@ export const ROUTES = {
     REGISTERSENSORCITIZEN: `${DNS.host}api/user/movil/register/usersensorhumano`,
     GETALERTSRISK: `${DNS.host}api/tickets/tickets`,
     GETMEALERTRISK: `${DNS.host}api/tickets/showbyuser`,
+    GETHISTORYSTATION: (id: number) => `${DNS.host}api/estaciones/historico_data/${id}`
 }
