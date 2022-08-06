@@ -1,5 +1,5 @@
 export const DNS = {
-    host: 'http://10.12.4.47:5000/'
+    host: 'http://satic.cali.gov.co:9292/'
 }
 
 export const ROUTES = {

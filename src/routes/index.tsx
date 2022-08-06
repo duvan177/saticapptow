@@ -1,18 +1,23 @@
 import React, {Component, useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer } from '@react-navigation/native';
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack';
 // import { Login , CreateAccount} from '../views'
 import HomeContainer from './HomeContainer';
 import LoginContainer from './LoginContainer';
-import GraphicStationContainer from './GraphicStationContainer'
+import GraphicStationContainer from './GraphicStationContainer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
-import {addUser} from '../store/actions';
+import {addUser } from '../store/actions';
 import AlertRiskContainer from './AlertRiskContainer';
 import PushNotification from 'react-native-push-notification';
 import {DNS} from '../api/apiRoutes.routes';
 import {io} from 'socket.io-client';
+import { Platform } from 'react-native';
 const AuthStack = createStackNavigator();
+
 
 export default function Root() {
   const dispatch = useDispatch();
@@ -30,20 +35,44 @@ export default function Root() {
   };
   const notifi = () => {
     try {
-      PushNotification.localNotification({
-        // priority:"max",
-        channelId: 'channel-id-1', // (required)
-        title: 'Alerta SATIC',
-        message: 'Se ha registrado una alerta cerca de tí.',
-        soundName: 'default',
-        actions: ['Yes', 'No'],
-        bigText:
-          'Se ha registrado una alerta cerca de tí ten encuenta las medidas de seguridad.',
-        playSound: true,
-
-        // reply_placeholder_text: "Write your response...", // (required)
-        // reply_button_text: "Reply" // (required)
+    
+      PushNotification.createChannel({
+        channelId: "mychannel", // (required)
+        channelName: "My channel", // (required)
+        vibrate: true,
+    }, (created) => {
+      PushNotification.configure({
+  
+        onNotification: function (notification) {
+          console.log("NOTIFICATION:", notification);
+          
+        },
+      
+       
+      
+      
+        requestPermissions: Platform.OS === 'ios'
       });
+      PushNotification.localNotification({
+        channelId: "mychannel",
+        autoCancel: true,
+        bigText: 'Mantente informado y alerta, ten en cuenta las medidas de seguridad.',
+        subText: 'Notification',
+        title: 'SATIC al territorio',
+        message: `Se ha registrado una alerta de riesgo.`,
+        vibrate: true,
+        vibration: 300,
+        playSound: true,
+        soundName: 'default',
+        ignoreInForeground: false,
+        importance:'high',
+        invokeApp:true,
+        allowWhileIdle: true,
+        priority:'high',
+        visibility:'public'
+      })
+    } )
+
     } catch (error) {
       console.log(error);
     }
@@ -56,8 +85,6 @@ export default function Root() {
       // console.log(socketIo)
       // console.log('inicia el socket')
       socketIo.on('new-socket', (msg: any) => {
-        console.log(msg);
-
         notifi();
       });
     } catch (error) {
@@ -74,34 +101,32 @@ export default function Root() {
     <NavigationContainer>
       <AuthStack.Navigator
         initialRouteName="HomeStackContainer"
-        
         screenOptions={{
           headerShown: false,
-      
         }}>
         <AuthStack.Screen
           options={{
-            cardStyleInterpolator:CardStyleInterpolators.forModalPresentationIOS
+            cardStyleInterpolator:
+              CardStyleInterpolators.forModalPresentationIOS,
           }}
           name="GraphicStationContainer"
           component={GraphicStationContainer}
         />
         <AuthStack.Screen
-
           options={{
-            headerShown:false,
-            cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS   
-              
-             }}
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
           name="AlertRiskStackContainer"
           component={AlertRiskContainer}
         />
         <AuthStack.Screen
-        options={{
-          headerShown:false     
-           }}
-        name="HomeStackContainer" 
-        component={HomeContainer} />
+          options={{
+            headerShown: false,
+          }}
+          name="HomeStackContainer"
+          component={HomeContainer}
+        />
         <AuthStack.Screen
           name="LoginStackContainer"
           component={LoginContainer}

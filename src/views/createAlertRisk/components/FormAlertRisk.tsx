@@ -202,11 +202,12 @@ export default function FormAlertRisk(props: any): JSX.Element {
     //   .then((data: any) => console.log(data))
     //   .catch((err: any) => console.error(err));
     // console.log(cameraRef);
-    const options = {quality: 0.5, base64: true};
+    const options = {quality: 0.5, base64: false};
     const data = await cameraRef.current.takePictureAsync(options);
     console.log('photo', data);
-    setData({...dataForm, foto_riesgo: data.base64});
-    setFilePath(data.base64);
+
+    setData({...dataForm, foto_riesgo: { uri: data.uri, name: 'picture.jpg', type: 'image/jpg' }});
+    setFilePath(data.uri);
     setVisible(!visible);
   };
 
@@ -218,16 +219,19 @@ export default function FormAlertRisk(props: any): JSX.Element {
             maxWidth: 300,
             maxHeight: 550,
             quality: 0,
-            
+            storageOptions: {
+              skipBackup: true,
+          },
             mediaType: 'photo',
-            includeBase64:true
+            includeBase64:false
           },
           (response: any) => {
             console.log(response)
             if (!response?.didCancel) {
               //  console.log('photo' ,response)
-              setFilePath(response.assets[0].base64);
-              setData({...dataForm, foto_riesgo: response.assets[0].base64});
+              setFilePath(response.assets[0].uri);
+              setData({...dataForm, foto_riesgo: { uri: response.assets[0].uri, name:response.assets[0].fileName, type: response.assets[0].type}});
+              // setData({...dataForm, foto_riesgo: response.assets[0]});
               // console.log(response);
             }
           },
@@ -392,7 +396,7 @@ export default function FormAlertRisk(props: any): JSX.Element {
 
         <Input
           multiline={true}
-          placeholder="descripción"
+          placeholder="Descripción"
           //  leftIcon={{ type: 'font-awesome', name: 'comment' }}
           style={{minHeight: 100}}
           onChangeText={(value: any) => setDescription(value)}
@@ -470,7 +474,7 @@ export default function FormAlertRisk(props: any): JSX.Element {
               style={{width: 40, height: 40}}
               source={require('../../../assets/images/galeria.png')}
             />
-            <Text>Galeria</Text>
+            <Text>Galería</Text>
           </TouchableOpacity>
         </View>
 
@@ -479,7 +483,7 @@ export default function FormAlertRisk(props: any): JSX.Element {
             <Image
               // style={styl}
               style={{width: 150, minHeight: 150}}
-              source={{uri: `data:image/gif;base64,${filePath}`}}
+              source={{uri: `${filePath}`}}
             />
           ) : (
             <></>

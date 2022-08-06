@@ -38,7 +38,7 @@ const RenderItem = ({data}: any) => {
   const newData = reduceData(data.datasets);
   const dataEnd = newData[newData.length - 1];
   const dataMax = Math.max(...newData);
-  console.log('dato max', data.infoSensor.nom_sensor);
+  console.log('dato max', data);
   return (
     <>
       <View
@@ -84,7 +84,7 @@ const RenderItem = ({data}: any) => {
             color={'#ff0e0e'}
           />
           <Text style={{textAlign: 'center', marginVertical: 10}}>
-            {dataMax}
+            {`${dataMax} ${data.infoSensor?.unidad_medida_short || ''}`}
           </Text>
           <Text style={{color: 'gray', fontWeight: 'bold'}}>
             Dato máximo registrado
@@ -104,7 +104,9 @@ const RenderItem = ({data}: any) => {
               fontWeight: 'bold',
               color: '#888888',
             }}>
-            {dataEnd}
+            {`${parseFloat(dataEnd).toFixed(2)} ${
+              data.infoSensor?.unidad_medida_short|| ''
+            }`}
           </Text>
         </ProgressCircle>
       </View>
@@ -156,7 +158,6 @@ const RenderItem = ({data}: any) => {
                 strokeWidth: '2',
                 stroke: '#ffffff',
               },
-              
             }}
             //  decorator={()=><Text>hola</Text>}
             bezier
@@ -235,7 +236,7 @@ export default function index(props: any) {
       route.params.data.id_estacion,
     );
 
-    console.log('response data', route.params.data.nom_estacion);
+    console.log('response data', route.params.data.nom_estacion, responseData);
     setLoadingData(false);
     if (!responseData.status) return;
 

@@ -16,7 +16,7 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 import { userRoutes } from '../../api';
-import DeviceInfo from 'react-native-device-info';
+
 // import moment from 'moment'
 import moment from 'moment';
 import 'moment/locale/es';
@@ -242,7 +242,6 @@ function alertsRisk({ navigation, user, risks, risksByUser }: any) {
 
   useEffect(() => {
     // console.log('riesgos' ,risks)
-
     setFilterData(risks)
     setStatusGetRisks(false);
     // setDataRisks(risks)
@@ -315,7 +314,7 @@ function alertsRisk({ navigation, user, risks, risksByUser }: any) {
           }}
           showsVerticalScrollIndicator={true}
         > */}
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <View style={{ flex: 1, backgroundColor: 'white',  }}>
           {statusGetRisks ? (
             <View
               style={{
@@ -391,13 +390,17 @@ function alertsRisk({ navigation, user, risks, risksByUser }: any) {
                       Alertas recientes
                     </Text>
                   </>
+
                 }
                 data={dataRisks}
                 renderItem={renderItem}
                 keyExtractor={(item: any) => `${item.ID_TICKET}`}
               />
+
+              <View style={{height:100}}></View>
             </>
           )}
+        
         </View>
         {/* </ScrollView> */}
       </View>

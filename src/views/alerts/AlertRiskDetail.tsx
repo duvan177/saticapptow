@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -10,15 +10,15 @@ import {
   Image,
 } from 'react-native';
 // import {ScrollView} from 'react-native-gesture-handler';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import AnimatedHeader from './components/headerComponent';
 const WIDTH = Dimensions.get('window').width;
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { WebView } from 'react-native-webview';
-import { Badge, Header, Icon } from 'react-native-elements';
+import {WebView} from 'react-native-webview';
+import {Badge, Header, Icon} from 'react-native-elements';
 import moment from 'moment';
 
 const HEIGHT = Dimensions.get('window').height;
@@ -27,8 +27,8 @@ const HEADER_HEIGHT = HEIGHT - HEIGHT * 0.5;
 export default function AlertRiskDetail(props: any) {
   const map: any = useRef(null);
   const offset = useRef(new Animated.Value(0)).current;
-  const { detail } = props.route.params;
-  const { goBack } = props.navigation;
+  const {detail} = props.route.params;
+  const {goBack} = props.navigation;
   const headerHeight = offset.interpolate({
     inputRange: [0, HEADER_HEIGHT],
     outputRange: [HEADER_HEIGHT, 20],
@@ -67,12 +67,13 @@ export default function AlertRiskDetail(props: any) {
       `;
 
   useEffect(() => {
-    console.log('detalle alerta' ,map.current.injectJavaScript(RunFirst));
-  
+    console.log('detalle alerta', detail);
+    setTimeout(() => {
+      map && map.current.injectJavaScript(RunFirst);
+    }, 200);
   }, []);
   return (
-
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       <View
         style={{
           height: hp('8%'),
@@ -81,7 +82,6 @@ export default function AlertRiskDetail(props: any) {
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: wp('3%'),
-            
         }}>
         <Icon
           name="chevron-left"
@@ -96,7 +96,7 @@ export default function AlertRiskDetail(props: any) {
             fontWeight: 'bold',
             color: '#888888',
           }}>
-          Detalle Riesgo
+          Detalle
         </Text>
         <Icon name="alert" type="material-community" color={'#000000'} />
       </View>
@@ -128,23 +128,21 @@ export default function AlertRiskDetail(props: any) {
     };
     true;
   `}
-            nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
+            nativeConfig={{props: {webContentsDebuggingEnabled: true}}}
             javaScriptEnabled={true}
             source={{
-              
-                uri: 'file:///android_asset/html_script_Onclick_risk.html',
-                baseUrl: 'file:///android_asset/',
-              }
-            }
+              uri: 'file:///android_asset/html_script_Onclick_risk.html',
+              baseUrl: 'file:///android_asset/',
+            }}
             startInLoadingState={true}
             // renderLoading={LoadingIndicatorView}
             // onMessage={onMessage}
             mixedContentMode={'compatibility'}
             injectedJavaScriptBeforeContentLoadedForMainFrameOnly={false}
-            onError={(err) => console.log('error', err)}
-         // injectedJavaScriptBeforeContentLoaded={RunFirst}
-          // injectedJavaScript={fp}
-          allowsLinkPsreview={true}
+            onError={err => console.log('error', err)}
+            // injectedJavaScriptBeforeContentLoaded={RunFirst}
+            // injectedJavaScript={fp}
+            allowsLinkPsreview={true}
           />
           <View
             style={{
@@ -161,25 +159,20 @@ export default function AlertRiskDetail(props: any) {
               color={'#000000'}
             />
 
-            <Text style={{ fontSize: 15, color: '#6b6b6b' }}>
-              Direccion: calle 10# 19 049{' '}
-            </Text>
-            <Text style={{ fontSize: 15, color: '#6b6b6b' }}>
-              Distancia: 4,8 Km{' '}
-            </Text>
+            <Text style={{fontSize: 15, color: '#6b6b6b'}}>Dirección:</Text>
+            <Text style={{fontSize: 15, color: '#6b6b6b'}}>Distancia:</Text>
           </View>
         </>
       </Animated.View>
 
       <ScrollView
-        style={{ backgroundColor: 'white' }}
+        style={{backgroundColor: 'white'}}
         // contentContainerStyle={{paddingTop:hp('40%')}}
         scrollEventThrottle={1}
         showsVerticalScrollIndicator={false}
-      
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: offset } } }],
-          { useNativeDriver: false },
+          [{nativeEvent: {contentOffset: {y: offset}}}],
+          {useNativeDriver: false},
         )}>
         <View
           style={{
@@ -203,42 +196,47 @@ export default function AlertRiskDetail(props: any) {
               {detail.RIESGO.toUpperCase()}
             </Text>
             <Badge
+              badgeStyle={{
+                height: 30,
+                width: 100,
+              }}
               status={
-                detail.ESTADO_ALARMA == 'ABIERTO'
+                detail.NIVEL_RIESGO == 2
                   ? 'warning'
-                  : detail.ESTADO_ALARMA == 'APROBADO'
-                    ? 'success'
-                    : 'error'
+                  : detail.NIVEL_RIESGO == 1
+                  ? 'success'
+                  : 'error'
               }
-              containerStyle={{ top: -10 }}
+              containerStyle={{top: -10}}
               value={
-                <Text style={{ padding: 10, color: 'white' }}>
-                  {' '}
-                  {detail.ESTADO_ALARMA}
+                <Text style={{color: 'white'}}>
+                  {detail.NIVEL_RIESGO == 1 && 'Nivel Bajo'}
+                  {detail.NIVEL_RIESGO == 2 && 'Nivel Medio'}
+                  {detail.NIVEL_RIESGO == 3 && 'Nivel Alto'}
                 </Text>
               }
             />
           </View>
-          <Text style={{ marginBottom: 20 }}>
+          <Text style={{marginBottom: 20 , fontSize: 18}}>
             Fecha: {moment(detail.FECHA_CREA).format('MMMM Do YYYY, h:mm a')}
           </Text>
-          <Text style={{ marginBottom: 20, fontSize: 18 }}>
-            {detail.DESCRIPCION_TICKET}
+          <Text style={{marginBottom: 20, fontSize: 18}}>
+            Descripción: {detail.DESCRIPCION_TICKET}
           </Text>
           <View
             style={{
               marginTop: hp('5%'),
               justifyContent: 'space-between',
               flexDirection: 'row',
-              alignItems: "center"
+              alignItems: 'center',
             }}>
             <Image
-              style={{ width: wp('20%'), height: hp('9%') }}
+              style={{width: wp('20%'), height: hp('9%')}}
               resizeMode="stretch"
               //   width={ }
 
               source={{
-                uri: `https://0f3922952e3d.ngrok.io/img/iconsrisk/${detail.RIESGO}On.png`
+                uri: `https://0f3922952e3d.ngrok.io/img/iconsrisk/${detail.RIESGO}On.png`,
               }}
             />
             <TouchableOpacity
@@ -251,7 +249,7 @@ export default function AlertRiskDetail(props: any) {
                 },
               ]}
               onPress={() => goBack()}>
-              <Text style={{ textAlign: 'center', color: '#ffffff' }}>
+              <Text style={{textAlign: 'center', color: '#ffffff'}}>
                 Ver medidas de seguridad
               </Text>
             </TouchableOpacity>
@@ -259,7 +257,6 @@ export default function AlertRiskDetail(props: any) {
         </View>
       </ScrollView>
     </SafeAreaView>
-
   );
 }
 

@@ -75,10 +75,10 @@ function index(props: any) {
     //   return;
     // }
     setStatusGeo(true);
-    Geolocation.getCurrentPosition((info:any) =>  {
-      const {latitude: lat, longitude: lng } = info.coords;
-      setCoordenadas({lat , lng});
-      setStatusGeo(false)
+    Geolocation.getCurrentPosition((info: any) => {
+      const {latitude: lat, longitude: lng} = info.coords;
+      setCoordenadas({lat, lng});
+      setStatusGeo(false);
     });
     //  await Geolocation.requestAuthorization();
     Geolocation.getCurrentPosition(
@@ -107,30 +107,48 @@ function index(props: any) {
   const setDataForm = async () => {
     const validate = Object.keys(data);
     const input: Array<any> = [];
-    validate.map((item) => {
+    validate.map(item => {
       if (data[item] == null) {
         input.push({item: item});
       }
     });
-    console.log(validate, input);
-    if (input.length > 0) {
+    console.log(validate, input, data);
+    if (input.length > 0 ) {
+
       Alert.alert(
         '',
-        'Todos los campos son requeridos, verifica y intenta nuevamente.',
+        'Todos los campos son requeridos, verifica e intenta nuevamente.',
+      );
+      return;
+    }
+    if( !(data['descripcion']?.replace(/\s/g, '').length > 0)){
+      Alert.alert(
+        '',
+        'Descripción inválida verifica e intenta nuevamente.',
       );
       return;
     }
     setStatusSendInfo(true);
+    const formData = new FormData();
 
+    Object.entries(data).forEach(([key, value]) => {
+      if (key !== 'foto_riesgo') {
+        formData.append(key, value);
+      }
+    });
+
+    formData.append('urlFoto', data.foto_riesgo);
+
+    // console.log('data preparada', formData);
     let response: any = await axios
-      .post(ROUTES.NEWTICKET, data, {
+      .post(ROUTES.NEWTICKET, formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
           'x-access-token': user.token,
         },
         timeout: 10000,
       })
-      .catch((e) => {
+      .catch(e => {
         setStatusSendInfo(false);
 
         Alert.alert(
@@ -145,7 +163,7 @@ function index(props: any) {
     if (response.status == 200) {
       Alert.alert(
         'Alerta generada',
-        'su alerta a sido enviada con exito, y pronto será atendida. Gracias.',
+        'su alerta a sido enviada con éxito y pronto será atendida. Gracias!',
       );
       navigation.goBack();
     }
